@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Uzma!</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  font-family: Georgia, serif;
+  color: #873e66;
+  background: linear-gradient(135deg,#fff0f6,#eee4ff);
+}
+
+.container { max-width: 750px; margin: auto; }
+
+header, .card {
+  background: white;
+  padding: 30px 20px;
+  border-radius: 25px;
+  margin: 25px auto;
+  box-shadow: 0 8px 25px #dba6c655;
+}
+
+h1 { color: #d64f91; font-size: 42px; }
+h2 { color: #c34e86; }
+
+button {
+  background: #d64f91;
+  color: white;
+  border: none;
+  padding: 13px 22px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.photo {
+  width: 85%;
+  max-width: 350px;
+  padding: 12px 12px 35px;
+  background: white;
+  box-shadow: 0 8px 20px #aaa;
+  transform: rotate(-2deg);
+  margin: 30px auto;
+}
+
+.photo img { width: 100%; display: block; }
+
+.caption { margin-top: 15px; color: #d64f91; }
+
+.letter {
+  display: none;
+  text-align: left;
+  line-height: 1.9;
+  white-space: pre-line;
+  background: #fff5fa;
+  padding: 22px;
+  border-radius: 18px;
+}
+
+.stickers { font-size: 35px; margin: 20px; }
+
+.heart {
+  position: fixed;
+  top: -30px;
+  animation: fall 5s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="stickers">🎀 🩺 🎂 💗</div>
+  <h1>Happy Birthday Uzma!</h1>
+  <h2>Our Future Doctor 🩺</h2>
+  <p>A little surprise for my favourite girl!</p>
+
+  <button onclick="celebrate()">Click for a surprise 💗</button>
+  <button onclick="toggleMusic()" id="music">
+    ▶ Play Birthday Music
+  </button>
+</header>
+
+<div class="photo">
+  <img src="uzma.jpg" alt="Uzma">
+  <div class="caption">Our beautiful birthday girl 💕</div>
+</div>
+
+<div class="stickers">👩‍⚕️ 🩺 💊 🩹 🌸</div>
+
+<div class="card">
+  <h2>A Little Letter For You 💌</h2>
+  <p>Someone has something special to tell you...</p>
+
+  <button onclick="openLetter()">Open Your Letter 💗</button>
+
+  <div class="letter" id="letter">
+HEY UZMA!!! ❤️
+
+I don't know how to express my feelings, but let's keep it simple.
+
+You're a special person in my life. Just because we haven't contacted each other these days doesn't mean I don't care about you.
+
+I know how important you are in my life. Everyone who has entered my life knows how much Uzma means to me.
+
+I may not always deserve your love, but I'll never stop caring about you.
+
+HAPPIEST BIRTHDAY, UZMA! 🎂
+
+I wish all your dreams come true. I hope you get everything you want in life.
+
+And my biggest wish is to see you soon wearing that cute white apron with a stethoscope around your neck.
+
+DR. UZMA 🩺✨
+
+Keep dreaming, future doctor. I'm always cheering for you! 💗
+  </div>
+</div>
+
+<div class="card">
+  <h2>Dear Future Dr. Uzma 🩺</h2>
+  <p>
+    May all your dreams come true.
+    May your hard work bring you success.
+    One day, I hope to see you wearing
+    that beautiful white coat!
+  </p>
+
+  <div class="stickers">🎓 🩺 👩‍⚕️ 💗 🌷</div>
+  <h2>THE WORLD'S FUTURE DOCTOR!</h2>
+</div>
+
+<footer>Made with lots of love, just for Uzma 💗</footer>
+
+</div>
+
+<script>
+function openLetter() {
+  const letter = document.getElementById("letter");
+  letter.style.display =
+    letter.style.display === "block" ? "none" : "block";
+}
+
+function celebrate() {
+  for(let i=0; i<35; i++) {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = ["💗","🎀","✨","🌸"][
+      Math.floor(Math.random()*4)
+    ];
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.animationDuration = (3+Math.random()*3)+"s";
+    heart.style.fontSize = "25px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+  }
+}
+
+let audioContext;
+let playing = false;
+let timer;
+let step = 0;
+
+const notes = [
+  523,523,587,523,698,659,
+  523,523,587,523,784,698
+];
+
+function toggleMusic() {
+  const btn = document.getElementById("music");
+
+  if(!playing) {
+    audioContext = audioContext ||
+      new (window.AudioContext || window.webkitAudioContext)();
+
+    audioContext.resume();
+    playing = true;
+    btn.innerHTML = "Ⅱ Pause Music";
+    playNote();
+  } else {
+    playing = false;
+    clearTimeout(timer);
+    btn.innerHTML = "▶ Play Birthday Music";
+  }
+}
+
+function playNote() {
+  if(!playing) return;
+
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+
+  oscillator.frequency.value = notes[step % notes.length];
+  oscillator.type = "sine";
+
+  gain.gain.setValueAtTime(0.08,audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,audioContext.currentTime+0.35
+  );
+
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+
+  oscillator.start();
+  oscillator.stop(audioContext.currentTime+0.36);
+
+  step++;
+  timer = setTimeout(playNote,400);
+}
+</script>
+
+</body>
+</html>
